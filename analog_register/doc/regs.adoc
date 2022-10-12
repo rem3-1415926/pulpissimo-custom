@@ -1,0 +1,1199 @@
+== Register map
+
+Created with https://github.com/esynr3z/corsair[Corsair] v1.0.2.
+
+=== Conventions
+
+[#table-Register_access_modes,cols="1,1", options="header"]
+|==========================
+| Access mode | Description
+| rw          | Read and Write
+| rw1c        | Read and Write 1 to Clear
+| rw1s        | Read and Write 1 to Set
+| ro          | Read Only
+| roc         | Read Only to Clear
+| roll        | Read Only / Latch Low
+| rolh        | Read Only / Latch High
+| wo          | Write only
+| wosc        | Write Only / Self Clear
+|==========================
+
+[[register_map_summary]]
+=== Register map summary
+
+Base address: 0x1a110000
+
+[#table-Register_map,cols="1,1,1", options="header"]
+|==========================
+| Name | Address | Description
+| <<I_BIAS_CONTROL>>       | 0x00000000 | Control register.
+| <<I_BIAS_SW>>            | 0x00000004 | Switch configuration
+| <<PGA1_CONTROL>>         | 0x00000100 | Control register.
+| <<PGA1_INT_SW>>          | 0x00000110 | Switch configuration for internal connectivity
+| <<PGA1_TST_SW>>          | 0x00000120 | Switch configuration for testpad connectivity
+| <<PGA1_OC1>>             | 0x00000140 | Offset compensation values for OPAMP1
+| <<PGA1_OC2>>             | 0x00000144 | Offset compensation values for OPAMP2
+| <<PGA1_GAIN1>>           | 0x00000150 | Gain for first amplifier stage
+| <<PGA1_GAIN2_1>>         | 0x00000160 | Gain for second amplifier stage, P path
+| <<PGA1_GAIN2_2>>         | 0x00000164 | Gain for second amplifier stage, N path
+| <<PGA2_CONTROL>>         | 0x00000200 | Control register.
+| <<PGA2_INT_SW>>          | 0x00000210 | Switch configuration for internal connectivity
+| <<PGA2_TST_SW>>          | 0x00000220 | Switch configuration for testpad connectivity
+| <<PGA2_OC1>>             | 0x00000240 | Offset compensation values for OPAMP1
+| <<PGA2_OC2>>             | 0x00000244 | Offset compensation values for OPAMP2
+| <<PGA2_GAIN1>>           | 0x00000250 | Gain for first amplifier stage
+| <<PGA2_GAIN2_1>>         | 0x00000260 | Gain for second amplifier stage, P path
+| <<PGA2_GAIN2_2>>         | 0x00000264 | Gain for second amplifier stage, N path
+| <<TI_CONTROL>>           | 0x00000280 | Transimpedance control register
+| <<TI_GAIN>>              | 0x00000284 | Transimpedance gain
+| <<TI_SW>>                | 0x00000288 | Transimpedance switch configuration
+| <<ADC1_CONTROL>>         | 0x00000300 | Control register
+| <<ADC1_DELAY>>           | 0x00000310 | delay settings
+| <<ADC1_OUT>>             | 0x00000380 | ADC output value
+| <<ADC2_CONTROL>>         | 0x00000400 | Control register
+| <<ADC2_DELAY>>           | 0x00000410 | delay settings
+| <<ADC2_OUT>>             | 0x00000480 | ADC output value
+| <<DAC1_CONTROL>>         | 0x00000500 | Control register
+| <<DAC1_TST_SW>>          | 0x00000510 | Switch register
+| <<DAC1_GAIN>>            | 0x00000520 | analog gain selection
+| <<DAC1_ROUT>>            | 0x00000530 | output resistance selection
+| <<DAC2_CONTROL>>         | 0x00000600 | Control register
+| <<DAC2_TST_SW>>          | 0x00000610 | Switch register
+| <<DAC2_GAIN>>            | 0x00000620 | analog gain selection
+| <<DAC2_ROUT>>            | 0x00000630 | output resistance selection
+| <<SINE_LUT_CONTROL>>     | 0x00000700 | TBD
+| <<SINE_LUT_STEP>>        | 0x00000710 | step size selection
+| <<SINE_LUT_OUT0>>        | 0x00000780 | current sine at 0° tap
+| <<SINE_LUT_OUT90>>       | 0x00000784 | current sine at 90° tap
+| <<LOCKIN_PLACEHOLDER>>   | 0x00000800 | TBD
+|==========================
+
+
+
+[[I_BIAS_CONTROL]]
+=== I_BIAS_CONTROL
+
+Control register.
+
+Address offset: 0x00000000
+
+Reset value: 0x00000000
+
+image::adoc_img/i_bias_control.svg[i_bias_control]
+
+[#table-I_BIAS_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| power_down       | 2:0    | rw              | 0x0        | Selection of devices to power down
+|==========================
+
+
+Enumerated values for I_BIAS_CONTROL.power_down.
+
+[#table-I_BIAS_CONTROL_power_down_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| COMMON           | 0x1    | power down general Vref
+| ADC1             | 0x2    | power down ADC1 Vref
+| ADC2             | 0x4    | power down ADC2 Vref
+| ALL              | 0x7    | power down all 3 Vref
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[I_BIAS_SW]]
+=== I_BIAS_SW
+
+Switch configuration
+
+Address offset: 0x00000004
+
+Reset value: 0x00000003
+
+image::adoc_img/i_bias_sw.svg[i_bias_sw]
+
+[#table-I_BIAS_SW,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| source_sel       | 1:0    | rw              | 0x3        | Selection of Vref source
+|==========================
+
+
+Enumerated values for I_BIAS_SW.source_sel.
+
+[#table-I_BIAS_SW_source_sel_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| int              | 0x1    | activate internal resistive voltage divider
+| ext              | 0x2    | connect external Vref pad
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA1_CONTROL]]
+=== PGA1_CONTROL
+
+Control register.
+
+Address offset: 0x00000100
+
+Reset value: 0x00000000
+
+image::adoc_img/pga1_control.svg[pga1_control]
+
+[#table-PGA1_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| power_down       | 2:0    | rw              | 0x0        | Selection of devices to power down
+|==========================
+
+
+Enumerated values for PGA1_CONTROL.power_down.
+
+[#table-PGA1_CONTROL_power_down_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| OP1              | 0x1    | power down OPAMP1
+| OP2              | 0x2    | power down OPAMP2
+| DIFFAMP          | 0x4    | power down DIFFAMP
+| ALL              | 0x7    | power down all 3 opamps
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA1_INT_SW]]
+=== PGA1_INT_SW
+
+Switch configuration for internal connectivity
+
+Address offset: 0x00000110
+
+Reset value: 0x00003f00
+
+image::adoc_img/pga1_int_sw.svg[pga1_int_sw]
+
+[#table-PGA1_INT_SW,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| sc               | 13:12  | rw              | 0x3        | LNA feedback cap switch
+| sm               | 11:10  | rw              | 0x3        | diffamp input connection switch
+| se               | 9:8    | rw              | 0x3        | LNA input connection switch
+| offset_compensation | 5:0    | rw              | 0x0        | Selection of switches that are to be put into offset compensation mode
+|==========================
+
+
+Enumerated values for PGA1_INT_SW.offset_compensation.
+
+[#table-PGA1_INT_SW_offset_compensation_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| OC_OP1           | 0x7    | configuration for OP1
+| OC_OP2           | 0x38   | configuration for OP2
+|==========================
+
+Enumerated values for PGA1_INT_SW.se.
+
+[#table-PGA1_INT_SW_se_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x3    | configuration for normal operation
+|==========================
+
+Enumerated values for PGA1_INT_SW.sm.
+
+[#table-PGA1_INT_SW_sm_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x3    | configuration for normal operation
+|==========================
+
+Enumerated values for PGA1_INT_SW.sc.
+
+[#table-PGA1_INT_SW_sc_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x3    | configuration for normal operation
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA1_TST_SW]]
+=== PGA1_TST_SW
+
+Switch configuration for testpad connectivity
+
+Address offset: 0x00000120
+
+Reset value: 0x000000f1
+
+image::adoc_img/pga1_tst_sw.svg[pga1_tst_sw]
+
+[#table-PGA1_TST_SW,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| so               | 9:6    | rw              | 0x3        | SO switches that are connected to testpads
+| si               | 5:0    | rw              | 0x31       | SI switches that are connected to testpads
+|==========================
+
+
+Enumerated values for PGA1_TST_SW.si.
+
+[#table-PGA1_TST_SW_si_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x0    | configuration for normal operation
+|==========================
+
+Enumerated values for PGA1_TST_SW.so.
+
+[#table-PGA1_TST_SW_so_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x0    | configuration for normal operation
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA1_OC1]]
+=== PGA1_OC1
+
+Offset compensation values for OPAMP1
+
+Address offset: 0x00000140
+
+Reset value: 0x00000000
+
+image::adoc_img/pga1_oc1.svg[pga1_oc1]
+
+[#table-PGA1_OC1,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| OC1_N            | 15:8   | rw              | 0x00       | N side
+| OC1_P            | 7:0    | rw              | 0x00       | P side
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[PGA1_OC2]]
+=== PGA1_OC2
+
+Offset compensation values for OPAMP2
+
+Address offset: 0x00000144
+
+Reset value: 0x00000000
+
+image::adoc_img/pga1_oc2.svg[pga1_oc2]
+
+[#table-PGA1_OC2,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| OC1_N            | 15:8   | rw              | 0x00       | N side
+| OC1_P            | 7:0    | rw              | 0x00       | P side
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[PGA1_GAIN1]]
+=== PGA1_GAIN1
+
+Gain for first amplifier stage
+
+Address offset: 0x00000150
+
+Reset value: 0x00000001
+
+image::adoc_img/pga1_gain1.svg[pga1_gain1]
+
+[#table-PGA1_GAIN1,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| gain             | 6:0    | rw              | 0x1        | gain; linear between 1 and 128
+|==========================
+
+
+Enumerated values for PGA1_GAIN1.gain.
+
+[#table-PGA1_GAIN1_gain_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| min              | 0x0    | gain = 1
+| max              | 0x7f   | gain = 128
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA1_GAIN2_1]]
+=== PGA1_GAIN2_1
+
+Gain for second amplifier stage, P path
+
+Address offset: 0x00000160
+
+Reset value: 0x00000001
+
+image::adoc_img/pga1_gain2_1.svg[pga1_gain2_1]
+
+[#table-PGA1_GAIN2_1,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| gain             | 2:0    | rw              | 0x1        | gain; linear between 0.5 and 4
+|==========================
+
+
+Enumerated values for PGA1_GAIN2_1.gain.
+
+[#table-PGA1_GAIN2_1_gain_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| break            | 0x0    | decouple diffamp input from LNA output
+| min              | 0x1    | gain = 0.5
+| max              | 0x7    | gain = 3.5
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA1_GAIN2_2]]
+=== PGA1_GAIN2_2
+
+Gain for second amplifier stage, N path
+
+Address offset: 0x00000164
+
+Reset value: 0x00000001
+
+image::adoc_img/pga1_gain2_2.svg[pga1_gain2_2]
+
+[#table-PGA1_GAIN2_2,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| gain             | 2:0    | rw              | 0x1        | gain; linear between 0.5 and 3.5
+|==========================
+
+
+Enumerated values for PGA1_GAIN2_2.gain.
+
+[#table-PGA1_GAIN2_2_gain_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| break            | 0x0    | decouple diffamp input from LNA output
+| min              | 0x1    | gain = 0.5
+| max              | 0x7    | gain = 3.5
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA2_CONTROL]]
+=== PGA2_CONTROL
+
+Control register.
+
+Address offset: 0x00000200
+
+Reset value: 0x00000000
+
+image::adoc_img/pga2_control.svg[pga2_control]
+
+[#table-PGA2_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| power_down       | 2:0    | rw              | 0x0        | Selection of devices to power down
+|==========================
+
+
+Enumerated values for PGA2_CONTROL.power_down.
+
+[#table-PGA2_CONTROL_power_down_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| OP1              | 0x1    | power down OPAMP1
+| OP2              | 0x2    | power down OPAMP2
+| DIFFAMP          | 0x4    | power down DIFFAMP
+| ALL              | 0x7    | power down all 3 opamps
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA2_INT_SW]]
+=== PGA2_INT_SW
+
+Switch configuration for internal connectivity
+
+Address offset: 0x00000210
+
+Reset value: 0x00003f00
+
+image::adoc_img/pga2_int_sw.svg[pga2_int_sw]
+
+[#table-PGA2_INT_SW,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| sc               | 13:12  | rw              | 0x3        | LNA feedback cap switch
+| sm               | 11:10  | rw              | 0x3        | diffamp input connection switch
+| se               | 9:8    | rw              | 0x3        | LNA input connection switch
+| offset_compensation | 5:0    | rw              | 0x0        | Selection of switches that are to be put into offset compensation mode
+|==========================
+
+
+Enumerated values for PGA2_INT_SW.offset_compensation.
+
+[#table-PGA2_INT_SW_offset_compensation_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| OC_OP1           | 0x7    | configuration for OP1
+| OC_OP2           | 0x38   | configuration for OP2
+|==========================
+
+Enumerated values for PGA2_INT_SW.se.
+
+[#table-PGA2_INT_SW_se_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x3    | configuration for normal operation
+|==========================
+
+Enumerated values for PGA2_INT_SW.sm.
+
+[#table-PGA2_INT_SW_sm_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x3    | configuration for normal operation
+|==========================
+
+Enumerated values for PGA2_INT_SW.sc.
+
+[#table-PGA2_INT_SW_sc_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x3    | configuration for normal operation
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA2_TST_SW]]
+=== PGA2_TST_SW
+
+Switch configuration for testpad connectivity
+
+Address offset: 0x00000220
+
+Reset value: 0x000000f1
+
+image::adoc_img/pga2_tst_sw.svg[pga2_tst_sw]
+
+[#table-PGA2_TST_SW,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| so               | 9:6    | rw              | 0x3        | SO switches that are connected to testpads
+| si               | 5:0    | rw              | 0x31       | SI switches that are connected to testpads
+|==========================
+
+
+Enumerated values for PGA2_TST_SW.si.
+
+[#table-PGA2_TST_SW_si_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x0    | configuration for normal operation
+|==========================
+
+Enumerated values for PGA2_TST_SW.so.
+
+[#table-PGA2_TST_SW_so_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x0    | configuration for normal operation
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA2_OC1]]
+=== PGA2_OC1
+
+Offset compensation values for OPAMP1
+
+Address offset: 0x00000240
+
+Reset value: 0x00000000
+
+image::adoc_img/pga2_oc1.svg[pga2_oc1]
+
+[#table-PGA2_OC1,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| OC1_N            | 15:8   | rw              | 0x00       | N side
+| OC1_P            | 7:0    | rw              | 0x00       | P side
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[PGA2_OC2]]
+=== PGA2_OC2
+
+Offset compensation values for OPAMP2
+
+Address offset: 0x00000244
+
+Reset value: 0x00000000
+
+image::adoc_img/pga2_oc2.svg[pga2_oc2]
+
+[#table-PGA2_OC2,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| OC1_N            | 15:8   | rw              | 0x00       | N side
+| OC1_P            | 7:0    | rw              | 0x00       | P side
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[PGA2_GAIN1]]
+=== PGA2_GAIN1
+
+Gain for first amplifier stage
+
+Address offset: 0x00000250
+
+Reset value: 0x00000013
+
+image::adoc_img/pga2_gain1.svg[pga2_gain1]
+
+[#table-PGA2_GAIN1,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| gain             | 6:0    | rw              | 0x13       | gain; linear between 1 and 128
+|==========================
+
+
+Enumerated values for PGA2_GAIN1.gain.
+
+[#table-PGA2_GAIN1_gain_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| min              | 0x0    | gain = 1
+| max              | 0x7f   | gain = 128
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA2_GAIN2_1]]
+=== PGA2_GAIN2_1
+
+Gain for second amplifier stage, P path
+
+Address offset: 0x00000260
+
+Reset value: 0x00000004
+
+image::adoc_img/pga2_gain2_1.svg[pga2_gain2_1]
+
+[#table-PGA2_GAIN2_1,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| gain             | 2:0    | rw              | 0x4        | gain; linear between 0.5 and 3.5
+|==========================
+
+
+Enumerated values for PGA2_GAIN2_1.gain.
+
+[#table-PGA2_GAIN2_1_gain_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| break            | 0x0    | decouple diffamp input from LNA output
+| min              | 0x1    | gain = 0.5
+| max              | 0x7    | gain = 4
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[PGA2_GAIN2_2]]
+=== PGA2_GAIN2_2
+
+Gain for second amplifier stage, N path
+
+Address offset: 0x00000264
+
+Reset value: 0x00000004
+
+image::adoc_img/pga2_gain2_2.svg[pga2_gain2_2]
+
+[#table-PGA2_GAIN2_2,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| gain             | 2:0    | rw              | 0x4        | gain; linear between 0.5 and 3.5
+|==========================
+
+
+Enumerated values for PGA2_GAIN2_2.gain.
+
+[#table-PGA2_GAIN2_2_gain_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| break            | 0x0    | decouple diffamp input from LNA output
+| min              | 0x1    | gain = 0.5
+| max              | 0x7    | gain = 3.5
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[TI_CONTROL]]
+=== TI_CONTROL
+
+Transimpedance control register
+
+Address offset: 0x00000280
+
+Reset value: 0x00000000
+
+image::adoc_img/ti_control.svg[ti_control]
+
+[#table-TI_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| pd               | 0      | rw              | 0x0        | power_down
+|==========================
+
+
+Enumerated values for TI_CONTROL.pd.
+
+[#table-TI_CONTROL_pd_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| opamp_on         | 0x0    | opamp running
+| opamp_off        | 0x1    | opamp power down
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[TI_GAIN]]
+=== TI_GAIN
+
+Transimpedance gain
+
+Address offset: 0x00000284
+
+Reset value: 0x00000000
+
+image::adoc_img/ti_gain.svg[ti_gain]
+
+[#table-TI_GAIN,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| res              | 2:0    | rw              | 0x0        | resistor selection
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[TI_SW]]
+=== TI_SW
+
+Transimpedance switch configuration
+
+Address offset: 0x00000288
+
+Reset value: 0x00000001
+
+image::adoc_img/ti_sw.svg[ti_sw]
+
+[#table-TI_SW,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| tp_switch        | 0      | rw              | 0x1        | testpad on/off
+|==========================
+
+
+Enumerated values for TI_SW.tp_switch.
+
+[#table-TI_SW_tp_switch_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| operation        | 0x0    | value during normal operation
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[ADC1_CONTROL]]
+=== ADC1_CONTROL
+
+Control register
+
+Address offset: 0x00000300
+
+Reset value: 0x00000001
+
+image::adoc_img/adc1_control.svg[adc1_control]
+
+[#table-ADC1_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| holdtype         | 1      | rw              | 0x0        | hold type
+| en               | 0      | rw              | 0x1        | enable
+|==========================
+
+
+Enumerated values for ADC1_CONTROL.en.
+
+[#table-ADC1_CONTROL_en_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| ADC_off          | 0x0    | ADC off
+| ADC_on           | 0x1    | ADC running
+|==========================
+
+Enumerated values for ADC1_CONTROL.holdtype.
+
+[#table-ADC1_CONTROL_holdtype_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| th               | 0x0    | track&hold
+| sh               | 0x1    | sample&hold
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[ADC1_DELAY]]
+=== ADC1_DELAY
+
+delay settings
+
+Address offset: 0x00000310
+
+Reset value: 0x00000c82
+
+image::adoc_img/adc1_delay.svg[adc1_delay]
+
+[#table-ADC1_DELAY,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| low_bits_delay   | 12:11  | rw              | 0x1        | number of clock cycles to wait after switching bits 3..0
+| mid_bits_delay   | 10:9   | rw              | 0x2        | number of clock cycles to wait after switching bits 6..4
+| high_bits_delay  | 8:5    | rw              | 0x4        | number of clock cycles to wait after switching bits 9..7
+| hold_time        | 4:0    | rw              | 0x2        | number of clock cycles to hold before sampling. Ignored in track&hold.
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[ADC1_OUT]]
+=== ADC1_OUT
+
+ADC output value
+
+Address offset: 0x00000380
+
+Reset value: 0x00000000
+
+image::adoc_img/adc1_out.svg[adc1_out]
+
+[#table-ADC1_OUT,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| output_value     | 11:0   | ro              | 0x000      | AD converted value
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[ADC2_CONTROL]]
+=== ADC2_CONTROL
+
+Control register
+
+Address offset: 0x00000400
+
+Reset value: 0x00000001
+
+image::adoc_img/adc2_control.svg[adc2_control]
+
+[#table-ADC2_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| holdtype         | 1      | rw              | 0x0        | hold type
+| en               | 0      | rw              | 0x1        | enable
+|==========================
+
+
+Enumerated values for ADC2_CONTROL.en.
+
+[#table-ADC2_CONTROL_en_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| ADC_off          | 0x0    | ADC off
+| ADC_on           | 0x1    | ADC running
+|==========================
+
+Enumerated values for ADC2_CONTROL.holdtype.
+
+[#table-ADC2_CONTROL_holdtype_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| th               | 0x0    | track&hold
+| sh               | 0x1    | sample&hold
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[ADC2_DELAY]]
+=== ADC2_DELAY
+
+delay settings
+
+Address offset: 0x00000410
+
+Reset value: 0x00000c82
+
+image::adoc_img/adc2_delay.svg[adc2_delay]
+
+[#table-ADC2_DELAY,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| low_bits_delay   | 12:11  | rw              | 0x1        | number of clock cycles to wait after switching bits 3..0
+| mid_bits_delay   | 10:9   | rw              | 0x2        | number of clock cycles to wait after switching bits 6..4
+| high_bits_delay  | 8:5    | rw              | 0x4        | number of clock cycles to wait after switching bits 9..7
+| hold_time        | 4:0    | rw              | 0x2        | number of clock cycles to hold before sampling. Ignored in track&hold.
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[ADC2_OUT]]
+=== ADC2_OUT
+
+ADC output value
+
+Address offset: 0x00000480
+
+Reset value: 0x00000000
+
+image::adoc_img/adc2_out.svg[adc2_out]
+
+[#table-ADC2_OUT,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| output_value     | 11:0   | ro              | 0x000      | AD converted value
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[DAC1_CONTROL]]
+=== DAC1_CONTROL
+
+Control register
+
+Address offset: 0x00000500
+
+Reset value: 0x00000000
+
+image::adoc_img/dac1_control.svg[dac1_control]
+
+[#table-DAC1_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| pd               | 0      | rw              | 0x0        | power down
+|==========================
+
+
+Enumerated values for DAC1_CONTROL.pd.
+
+[#table-DAC1_CONTROL_pd_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| DAC_on           | 0x0    | ADC running
+| DAC_off          | 0x1    | ADC off
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[DAC1_TST_SW]]
+=== DAC1_TST_SW
+
+Switch register
+
+Address offset: 0x00000510
+
+Reset value: 0x00000000
+
+image::adoc_img/dac1_tst_sw.svg[dac1_tst_sw]
+
+[#table-DAC1_TST_SW,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| switch_position  | 0      | rw              | 0x0        | testpad switch position
+|==========================
+
+
+Enumerated values for DAC1_TST_SW.switch_position.
+
+[#table-DAC1_TST_SW_switch_position_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| TP_off           | 0x0    | testpad disconnected
+| TP_on            | 0x1    | testpad connected
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[DAC1_GAIN]]
+=== DAC1_GAIN
+
+analog gain selection
+
+Address offset: 0x00000520
+
+Reset value: 0x00000001
+
+image::adoc_img/dac1_gain.svg[dac1_gain]
+
+[#table-DAC1_GAIN,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| gain             | 1:0    | rw              | 0x1        | gain selection (0.8, 1, 1.8)
+|==========================
+
+
+Enumerated values for DAC1_GAIN.gain.
+
+[#table-DAC1_GAIN_gain_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| break            | 0x0    | decouple output buffer from DAC output
+| min              | 0x1    | gain = 0.8
+| one              | 0x2    | gain = 1
+| max              | 0x3    | gain = 1.8 - above saturation when using sine LUT
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[DAC1_ROUT]]
+=== DAC1_ROUT
+
+output resistance selection
+
+Address offset: 0x00000530
+
+Reset value: 0x00000003
+
+image::adoc_img/dac1_rout.svg[dac1_rout]
+
+[#table-DAC1_ROUT,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| Rout             | 2:0    | rw              | 0x3        | output resistance selection (100k, 25k, 6.4k)
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[DAC2_CONTROL]]
+=== DAC2_CONTROL
+
+Control register
+
+Address offset: 0x00000600
+
+Reset value: 0x00000000
+
+image::adoc_img/dac2_control.svg[dac2_control]
+
+[#table-DAC2_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| pd               | 0      | rw              | 0x0        | power down
+|==========================
+
+
+Enumerated values for DAC2_CONTROL.pd.
+
+[#table-DAC2_CONTROL_pd_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| DAC_on           | 0x0    | ADC running
+| DAC_off          | 0x1    | ADC off
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[DAC2_TST_SW]]
+=== DAC2_TST_SW
+
+Switch register
+
+Address offset: 0x00000610
+
+Reset value: 0x00000000
+
+image::adoc_img/dac2_tst_sw.svg[dac2_tst_sw]
+
+[#table-DAC2_TST_SW,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| switch_position  | 0      | rw              | 0x0        | testpad switch position
+|==========================
+
+
+Enumerated values for DAC2_TST_SW.switch_position.
+
+[#table-DAC2_TST_SW_switch_position_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| TP_off           | 0x0    | testpad disconnected
+| TP_on            | 0x1    | testpad connected
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[DAC2_GAIN]]
+=== DAC2_GAIN
+
+analog gain selection
+
+Address offset: 0x00000620
+
+Reset value: 0x00000001
+
+image::adoc_img/dac2_gain.svg[dac2_gain]
+
+[#table-DAC2_GAIN,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| gain             | 1:0    | rw              | 0x1        | gain selection (0.8, 1, 1.8)
+|==========================
+
+
+Enumerated values for DAC2_GAIN.gain.
+
+[#table-DAC2_GAIN_gain_enums,cols="1,1,1", options="header"]
+|==========================
+| Name | Bits | Description
+| break            | 0x0    | decouple output buffer from DAC output
+| min              | 0x1    | gain = 0.8
+| one              | 0x2    | gain = 1
+| max              | 0x3    | gain = 1.8 - above saturation when using sine LUT
+|==========================
+
+Back to  <<register_map_summary>>
+
+[[DAC2_ROUT]]
+=== DAC2_ROUT
+
+output resistance selection
+
+Address offset: 0x00000630
+
+Reset value: 0x00000003
+
+image::adoc_img/dac2_rout.svg[dac2_rout]
+
+[#table-DAC2_ROUT,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| Rout             | 2:0    | rw              | 0x3        | output resistance selection (100k, 25k, 6.4k)
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[SINE_LUT_CONTROL]]
+=== SINE_LUT_CONTROL
+
+TBD
+
+Address offset: 0x00000700
+
+Reset value: 0x00000000
+
+image::adoc_img/sine_lut_control.svg[sine_lut_control]
+
+[#table-SINE_LUT_CONTROL,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[SINE_LUT_STEP]]
+=== SINE_LUT_STEP
+
+step size selection
+
+Address offset: 0x00000710
+
+Reset value: 0x00000001
+
+image::adoc_img/sine_lut_step.svg[sine_lut_step]
+
+[#table-SINE_LUT_STEP,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| step_size        | 9:0    | rw              | 0x01       | step size selection (in 1 / 1024 per rotation)
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[SINE_LUT_OUT0]]
+=== SINE_LUT_OUT0
+
+current sine at 0° tap
+
+Address offset: 0x00000780
+
+Reset value: 0x00000000
+
+image::adoc_img/sine_lut_out0.svg[sine_lut_out0]
+
+[#table-SINE_LUT_OUT0,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| out0             | 9:0    | ro              | 0x00       | current sine at 0° tap
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[SINE_LUT_OUT90]]
+=== SINE_LUT_OUT90
+
+current sine at 90° tap
+
+Address offset: 0x00000784
+
+Reset value: 0x00000000
+
+image::adoc_img/sine_lut_out90.svg[sine_lut_out90]
+
+[#table-SINE_LUT_OUT90,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| out0             | 9:0    | ro              | 0x00       | current sine at 90° tap
+|==========================
+
+
+Back to  <<register_map_summary>>
+
+[[LOCKIN_PLACEHOLDER]]
+=== LOCKIN_PLACEHOLDER
+
+TBD
+
+Address offset: 0x00000800
+
+Reset value: 0x00000000
+
+image::adoc_img/lockin_placeholder.svg[lockin_placeholder]
+
+[#table-LOCKIN_PLACEHOLDER,cols="1,1,1,1,1", options="header"]
+|==========================
+| Name | Bits | Mode | Reset | Description
+| TBD              | 7:0    | rw              | 0x00       | TBD
+|==========================
+
+
+Back to  <<register_map_summary>>

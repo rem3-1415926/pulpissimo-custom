@@ -1,0 +1,846 @@
+regmap:
+-   name: I_BIAS_CONTROL
+    description: Control register.
+    address: 0x0000
+    bitfields:
+    -   name: power_down
+        description: Selection of devices to power down
+        reset: 0
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:
+        -   name: COMMON
+            description: power down general Vref
+            value: 1
+        -   name: ADC1
+            description: power down ADC1 Vref
+            value: 2
+        -   name: ADC2
+            description: power down ADC2 Vref
+            value: 4
+        -   name: ALL
+            description: power down all 3 Vref
+            value: 7
+-   name: I_BIAS_SW
+    description: Switch configuration
+    address: 0x0004
+    bitfields:
+    -   name: source_sel
+        description: Selection of Vref source
+        reset: 3
+        width: 2
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:
+        -   name: int
+            description: activate internal resistive voltage divider
+            value: 1
+        -   name: ext
+            description: connect external Vref pad
+            value: 2
+-   name: PGA1_CONTROL
+    description: Control register.
+    address: 0x0100
+    bitfields:
+    -   name: power_down
+        description: Selection of devices to power down
+        reset: 0
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:
+        -   name: OP1
+            description: power down OPAMP1
+            value: 1
+        -   name: OP2
+            description: power down OPAMP2
+            value: 2
+        -   name: DIFFAMP
+            description: power down DIFFAMP
+            value: 4
+        -   name: ALL
+            description: power down all 3 opamps
+            value: 7
+-   name: PGA1_INT_SW
+    description: Switch configuration for internal connectivity
+    address: 0x0110
+    bitfields:
+    -   name: offset_compensation
+        description: Selection of switches that are to be put into offset compensation mode
+        reset: 0
+        width: 6
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: OC_OP1
+            description: configuration for OP1
+            value: 7
+        -   name: OC_OP2
+            description: configuration for OP2
+            value: 56
+    -   name: se
+        description: LNA input connection switch
+        reset: 3
+        width: 2
+        lsb: 8
+        access: rw
+        hardware: o
+        enums:
+        -   name: operation
+            description: configuration for normal operation
+            value: 3
+    -   name: sm
+        description: diffamp input connection switch
+        reset: 3
+        width: 2
+        lsb: 10
+        access: rw
+        hardware: o
+        enums:
+        -   name: operation
+            description: configuration for normal operation
+            value: 3
+    -   name: sc
+        description: LNA feedback cap switch
+        reset: 3
+        width: 2
+        lsb: 12
+        access: rw
+        hardware: o
+        enums: 
+        -   name: operation
+            description: configuration for normal operation
+            value: 3
+-   name: PGA1_TST_SW
+    description: Switch configuration for testpad connectivity
+    address: 0x0120
+    bitfields:
+    -   name: si
+        description: SI switches that are connected to testpads
+        reset: 0x31
+        width: 6
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:
+        -   name: operation
+            description: configuration for normal operation
+            value: 0
+    -   name: so
+        description: SO switches that are connected to testpads
+        reset: 3
+        width: 4
+        lsb: 6
+        access: rw
+        hardware: o
+        enums:
+        -   name: operation
+            description: configuration for normal operation
+            value: 0
+-   name: PGA1_OC1
+    description: Offset compensation values for OPAMP1
+    address: 0x0140
+    bitfields:
+    -   name: OC1_P
+        description: P side
+        reset: 0
+        width: 8
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+    -   name: OC1_N
+        description: N side
+        reset: 0
+        width: 8
+        lsb: 8
+        access: rw
+        hardware: o
+        enums: []
+-   name: PGA1_OC2
+    description: Offset compensation values for OPAMP2
+    address: 0x0144
+    bitfields:
+    -   name: OC1_P
+        description: P side
+        reset: 0
+        width: 8
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+    -   name: OC1_N
+        description: N side
+        reset: 0
+        width: 8
+        lsb: 8
+        access: rw
+        hardware: o
+        enums: []
+-   name: PGA1_GAIN1
+    description: Gain for first amplifier stage
+    address: 0x0150
+    bitfields:
+    -   name: gain
+        description: gain; linear between 1 and 128
+        reset: 1
+        width: 7
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:  
+        -   name: min
+            description: gain = 1
+            value: 0
+        -   name: max
+            description: gain = 128
+            value: 127
+-   name: PGA1_GAIN2_1
+    description: Gain for second amplifier stage, P path
+    address: 0x0160
+    bitfields:
+    -   name: gain
+        description: gain; linear between 0.5 and 4
+        reset: 1
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:
+        -   name: break
+            description: decouple diffamp input from LNA output
+            value: 0
+        -   name: min
+            description: gain = 0.5
+            value: 1
+        -   name: max
+            description: gain = 3.5
+            value: 7
+-   name: PGA1_GAIN2_2
+    description: Gain for second amplifier stage, N path
+    address: 0x0164
+    bitfields:
+    -   name: gain
+        description: gain; linear between 0.5 and 3.5
+        reset: 1
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:
+        -   name: break
+            description: decouple diffamp input from LNA output
+            value: 0
+        -   name: min
+            description: gain = 0.5
+            value: 1
+        -   name: max
+            description: gain = 3.5
+            value: 7
+-   name: PGA2_CONTROL
+    description: Control register.
+    address: 0x0200
+    bitfields:
+    -   name: power_down
+        description: Selection of devices to power down
+        reset: 0
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:
+        -   name: OP1
+            description: power down OPAMP1
+            value: 1
+        -   name: OP2
+            description: power down OPAMP2
+            value: 2
+        -   name: DIFFAMP
+            description: power down DIFFAMP
+            value: 4
+        -   name: ALL
+            description: power down all 3 opamps
+            value: 7
+-   name: PGA2_INT_SW
+    description: Switch configuration for internal connectivity
+    address: 0x0210
+    bitfields:
+    -   name: offset_compensation
+        description: Selection of switches that are to be put into offset compensation mode
+        reset: 0
+        width: 6
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: OC_OP1
+            description: configuration for OP1
+            value: 7
+        -   name: OC_OP2
+            description: configuration for OP2
+            value: 56
+    -   name: se
+        description: LNA input connection switch
+        reset: 3
+        width: 2
+        lsb: 8
+        access: rw
+        hardware: o
+        enums:
+        -   name: operation
+            description: configuration for normal operation
+            value: 3
+    -   name: sm
+        description: diffamp input connection switch
+        reset: 3
+        width: 2
+        lsb: 10
+        access: rw
+        hardware: o
+        enums:
+        -   name: operation
+            description: configuration for normal operation
+            value: 3
+    -   name: sc
+        description: LNA feedback cap switch
+        reset: 3
+        width: 2
+        lsb: 12
+        access: rw
+        hardware: o
+        enums: 
+        -   name: operation
+            description: configuration for normal operation
+            value: 3
+-   name: PGA2_TST_SW
+    description: Switch configuration for testpad connectivity
+    address: 0x0220
+    bitfields:
+    -   name: si
+        description: SI switches that are connected to testpads
+        reset: 0x31
+        width: 6
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:
+        -   name: operation
+            description: configuration for normal operation
+            value: 0
+    -   name: so
+        description: SO switches that are connected to testpads
+        reset: 3
+        width: 4
+        lsb: 6
+        access: rw
+        hardware: o
+        enums:
+        -   name: operation
+            description: configuration for normal operation
+            value: 0
+-   name: PGA2_OC1
+    description: Offset compensation values for OPAMP1
+    address: 0x0240
+    bitfields:
+    -   name: OC1_P
+        description: P side
+        reset: 0
+        width: 8
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+    -   name: OC1_N
+        description: N side
+        reset: 0
+        width: 8
+        lsb: 8
+        access: rw
+        hardware: o
+        enums: []
+-   name: PGA2_OC2
+    description: Offset compensation values for OPAMP2
+    address: 0x0244
+    bitfields:
+    -   name: OC1_P
+        description: P side
+        reset: 0
+        width: 8
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+    -   name: OC1_N
+        description: N side
+        reset: 0
+        width: 8
+        lsb: 8
+        access: rw
+        hardware: o
+        enums: []
+-   name: PGA2_GAIN1
+    description: Gain for first amplifier stage
+    address: 0x0250
+    bitfields:
+    -   name: gain
+        description: gain; linear between 1 and 128
+        reset: 19
+        width: 7
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:  
+        -   name: min
+            description: gain = 1
+            value: 0
+        -   name: max
+            description: gain = 128
+            value: 127
+-   name: PGA2_GAIN2_1
+    description: Gain for second amplifier stage, P path
+    address: 0x0260
+    bitfields:
+    -   name: gain
+        description: gain; linear between 0.5 and 3.5
+        reset: 4
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:  
+        -   name: break
+            description: decouple diffamp input from LNA output
+            value: 0
+        -   name: min
+            description: gain = 0.5
+            value: 1
+        -   name: max
+            description: gain = 4
+            value: 7
+-   name: PGA2_GAIN2_2
+    description: Gain for second amplifier stage, N path
+    address: 0x0264
+    bitfields:
+    -   name: gain
+        description: gain; linear between 0.5 and 3.5
+        reset: 4
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums:  
+        -   name: break
+            description: decouple diffamp input from LNA output
+            value: 0
+        -   name: min
+            description: gain = 0.5
+            value: 1
+        -   name: max
+            description: gain = 3.5
+            value: 7
+-   name: TI_CONTROL
+    description: Transimpedance control register
+    address: 0x0280
+    bitfields:
+    -   name: pd
+        description: power_down
+        reset: 0
+        width: 1
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: opamp_on
+            description: opamp running
+            value: 0
+        -   name: opamp_off
+            description: opamp power down
+            value: 1
+-   name: TI_GAIN
+    description: Transimpedance gain
+    address: 0x0284
+    bitfields:
+    -   name: res
+        description: resistor selection
+        reset: 0
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+-   name: TI_SW
+    description: Transimpedance switch configuration
+    address: 0x0288
+    bitfields:
+    -   name: tp_switch
+        description: testpad on/off
+        reset: 1
+        width: 1
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: operation
+            description: value during normal operation
+            value: 0
+-   name: ADC1_CONTROL
+    description: Control register
+    address: 0x0300
+    bitfields:
+    -   name: en
+        description: enable
+        reset: 1
+        width: 1
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: ADC_on
+            description: ADC running
+            value: 1
+        -   name: ADC_off
+            description: ADC off
+            value: 0
+    -   name: holdtype
+        description: hold type
+        reset: 0
+        width: 1
+        lsb: 1
+        access: rw
+        hardware: o
+        enums: 
+        -   name: th
+            description: track&hold
+            value: 0
+        -   name: sh
+            description: sample&hold
+            value: 1
+-   name: ADC1_DELAY
+    description: delay settings
+    address: 0x0310
+    bitfields:
+    -   name: hold_time
+        description: number of clock cycles to hold before sampling. Ignored in track&hold.
+        reset: 2
+        width: 5
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+    -   name: high_bits_delay
+        description: number of clock cycles to wait after switching bits 9..7
+        reset: 4
+        width: 4
+        lsb: 5
+        access: rw
+        hardware: o
+        enums: []
+    -   name: mid_bits_delay
+        description: number of clock cycles to wait after switching bits 6..4
+        reset: 2
+        width: 2
+        lsb: 9
+        access: rw
+        hardware: o
+        enums: []
+    -   name: low_bits_delay
+        description: number of clock cycles to wait after switching bits 3..0
+        reset: 1
+        width: 2
+        lsb: 11
+        access: rw
+        hardware: o
+        enums: []
+-   name: ADC1_OUT
+    description: ADC output value
+    address: 0x0380
+    bitfields:
+    -   name: output_value
+        description: AD converted value
+        reset: 0
+        width: 12
+        lsb: 0
+        access: ro
+        hardware: i
+        enums: []
+-   name: ADC2_CONTROL
+    description: Control register
+    address: 0x0400
+    bitfields:
+    -   name: en
+        description: enable
+        reset: 1
+        width: 1
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: ADC_on
+            description: ADC running
+            value: 1
+        -   name: ADC_off
+            description: ADC off
+            value: 0
+    -   name: holdtype
+        description: hold type
+        reset: 0
+        width: 1
+        lsb: 1
+        access: rw
+        hardware: o
+        enums: 
+        -   name: th
+            description: track&hold
+            value: 0
+        -   name: sh
+            description: sample&hold
+            value: 1
+-   name: ADC2_DELAY
+    description: delay settings
+    address: 0x0410
+    bitfields:
+    -   name: hold_time
+        description: number of clock cycles to hold before sampling. Ignored in track&hold.
+        reset: 2
+        width: 5
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+    -   name: high_bits_delay
+        description: number of clock cycles to wait after switching bits 9..7
+        reset: 4
+        width: 4
+        lsb: 5
+        access: rw
+        hardware: o
+        enums: []
+    -   name: mid_bits_delay
+        description: number of clock cycles to wait after switching bits 6..4
+        reset: 2
+        width: 2
+        lsb: 9
+        access: rw
+        hardware: o
+        enums: []
+    -   name: low_bits_delay
+        description: number of clock cycles to wait after switching bits 3..0
+        reset: 1
+        width: 2
+        lsb: 11
+        access: rw
+        hardware: o
+        enums: []
+-   name: ADC2_OUT
+    description: ADC output value
+    address: 0x0480
+    bitfields:
+    -   name: output_value
+        description: AD converted value
+        reset: 0
+        width: 12
+        lsb: 0
+        access: ro
+        hardware: i
+        enums: []
+-   name: DAC1_CONTROL
+    description: Control register 
+    address: 0x0500
+    bitfields:
+    -   name: pd
+        description: power down
+        reset: 0
+        width: 1
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: DAC_on
+            description: ADC running
+            value: 0
+        -   name: DAC_off
+            description: ADC off
+            value: 1
+-   name: DAC1_TST_SW
+    description: Switch register
+    address: 0x0510
+    bitfields:
+    -   name: switch_position
+        description: testpad switch position
+        reset: 0
+        width: 1
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: TP_on
+            description: testpad connected
+            value: 1
+        -   name: TP_off
+            description: testpad disconnected
+            value: 0
+-   name: DAC1_GAIN
+    description: analog gain selection
+    address: 0x0520
+    bitfields:
+    -   name: gain
+        description: gain selection (0.8, 1, 1.8) 
+        reset: 1
+        width: 2
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: break
+            description: decouple output buffer from DAC output
+            value: 0
+        -   name: min
+            description: gain = 0.8
+            value: 1
+        -   name: one
+            description: gain = 1
+            value: 2
+        -   name: max
+            description: gain = 1.8 - above saturation when using sine LUT
+            value: 3
+-   name: DAC1_ROUT
+    description: output resistance selection
+    address: 0x0530
+    bitfields:
+    -   name: Rout
+        description: output resistance selection (100k, 25k, 6.4k)
+        reset: 3
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+-   name: DAC2_CONTROL
+    description: Control register 
+    address: 0x0600
+    bitfields:
+    -   name: pd
+        description: power down
+        reset: 0
+        width: 1
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: DAC_on
+            description: ADC running
+            value: 0
+        -   name: DAC_off
+            description: ADC off
+            value: 1
+-   name: DAC2_TST_SW
+    description: Switch register
+    address: 0x0610
+    bitfields:
+    -   name: switch_position
+        description: testpad switch position
+        reset: 0
+        width: 1
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: TP_on
+            description: testpad connected
+            value: 1
+        -   name: TP_off
+            description: testpad disconnected
+            value: 0
+-   name: DAC2_GAIN
+    description: analog gain selection
+    address: 0x0620
+    bitfields:
+    -   name: gain
+        description: gain selection (0.8, 1, 1.8) 
+        reset: 1
+        width: 2
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: 
+        -   name: break
+            description: decouple output buffer from DAC output
+            value: 0
+        -   name: min
+            description: gain = 0.8
+            value: 1
+        -   name: one
+            description: gain = 1
+            value: 2
+        -   name: max
+            description: gain = 1.8 - above saturation when using sine LUT
+            value: 3
+-   name: DAC2_ROUT
+    description: output resistance selection
+    address: 0x0630
+    bitfields:
+    -   name: Rout
+        description: output resistance selection (100k, 25k, 6.4k)
+        reset: 3
+        width: 3
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+# -   name: SINE_LUT_CONTROL
+#     description: TBD
+#     address: 0x0700
+#     bitfields: []
+-   name: SINE_LUT_STEP
+    description: step size selection
+    address: 0x0710
+    bitfields:
+    -   name: step_size
+        description: step size selection (in 1 / 1024 per rotation)
+        reset: 1
+        width: 10
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []
+-   name: SINE_LUT_OUT0
+    description: current sine at 0° tap
+    address: 0x0780
+    bitfields:
+    -   name: out0
+        description: current sine at 0° tap
+        reset: 0
+        width: 10
+        lsb: 0
+        access: ro
+        hardware: i
+        enums: []
+-   name: SINE_LUT_OUT90
+    description: current sine at 90° tap
+    address: 0x0784
+    bitfields:
+    -   name: out90
+        description: current sine at 90° tap
+        reset: 0
+        width: 10
+        lsb: 0
+        access: ro
+        hardware: i
+        enums: []
+-   name: LOCKIN_PLACEHOLDER
+    description: TBD
+    address: 0x0800
+    bitfields:
+    -   name: TBD
+        description: TBD
+        reset: 0
+        width: 8
+        lsb: 0
+        access: rw
+        hardware: o
+        enums: []

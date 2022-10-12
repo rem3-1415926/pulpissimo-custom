@@ -1,0 +1,26 @@
+betrieb:
+SE = 1
+
+SI1, 2 = 0
+SO1, 2 = 0
+SI3, 4 = 0
+SM1, 2 = 1
+SO3, 4 = 0
+SI5, 6 = 0
+
+messen:
+SE = 1
+
+SI1 = 1
+SI2 = 0
+SO1, 2 = 1
+SI3, 4 = 0
+SM1, 2 = 1
+SO3, 4 = 0
+SI5, 6 = 1
+
+gain V: 2; 1 -> rst val = 1; ?
+gain I: 21; 2 -> rst val = 19; 
+Rout, RTI = 20k
+
+IU_STP: messen = 1, betrieb = 0
