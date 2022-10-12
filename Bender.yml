@@ -4,9 +4,9 @@ package:
     - "Remo Schraner <remo.schraner@ost.ch>"
     - "Simon Walker <simon.walker@ost.ch>"
 
-dependencies:
-  []
-workspace:
+# dependencies:
+#   []
+# workspace:
   # package_links:
   #   ips/tbtools: tbtools # symlinks for backwards compatibility with IPApprox
 #   checkout_dir: deps
